@@ -15,7 +15,7 @@ import json
 from os import system
 from systemd.journal import JournaldLogHandler
 
-with open('config.json') as config_file:
+with open('/home/pi/cam/config.json') as config_file:
     config = json.load(config_file)
 
 # get an instance of the logger object this module will use
