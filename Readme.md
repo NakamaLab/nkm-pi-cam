@@ -4,7 +4,7 @@ Python program that listens to a MQTT topic and publish a still image or an anim
 
 **WORK IN PROGRESS**
 
-# Pre-Requisits
+# Prerequisites
 
 - A raspberry pi / zero with raspbian lite
 - Python 3 (allready installed on raspbian lite)
