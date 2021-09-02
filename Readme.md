@@ -6,7 +6,7 @@ Python program that listens to a MQTT topic and publish a still image or an anim
 
 # Pre-Requisits
 
-- A reaspberry pi / zero with raspbian lite
+- A raspberry pi / zero with raspbian lite
 - Python 3 (allready installed on raspbian lite)
 - Pip 3 to install requirements
   - picamera
@@ -18,9 +18,11 @@ Python program that listens to a MQTT topic and publish a still image or an anim
 
 ```bash
 $ sudo apt-get update
-sudo apt-get -y install python3-pip python3-picamera git
-$ git clone
-pip install -r requirements.txt
+$ sudo apt-get -y install python3-pip python3-picamera git imagemagick
+$ cd ~
+$ git clone https://github.com/NakamaLab/nkm-pi-cam ./cam
+$ cd cam
+$ pip3 install -r requirements.txt
 ```
 
 # Configuration
@@ -46,3 +48,18 @@ Create a `config.json` file with the following data
 ```
 
 # Running as a Service
+
+```bash
+$ sudo cp ~/cam/nkm-pi-cam.service /etc/systemd/system
+$ systemctl enable nkm-pi-cam
+$ systemctl start nkm-pi-cam
+# view logs
+$ journalctl -u nkm-pi-cam
+```
+
+Uninstall
+
+```bash
+$ systemctl stop nkm-pi-cam
+$ systemctl disable nkm-pi-cam
+```
