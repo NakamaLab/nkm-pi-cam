@@ -70,8 +70,8 @@ def capture_image(t):
     ts = t.strftime('%Y-%m-%d-%H-%M')
     with picamera.PiCamera() as cam:
         cam.resolution = (1024, 768)
-        if config['rotate'] :
-            cam.rotate = config['rotate']
+        if "rotation" in config:
+            cam.rotation = config['rotation']
         cam.annotate_background = picamera.Color('black')
         cam.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         # Camera warm-up time
@@ -89,8 +89,8 @@ def tweet_video(api):
         status = 'Video auto-tweet from Pi: ' + t.strftime('%Y/%m/%d %H:%M:%S')
         with picamera.PiCamera() as camera:
             camera.resolution = (640, 480)
-            if config['rotate']:
-                cam.rotate = config['rotate']
+            if "rotation" in config:
+                camera.rotation = config['rotation']
             camera.start_preview()
             for i in range(15):
                 camera.annotate_background = picamera.Color('black')
