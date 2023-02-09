@@ -10,10 +10,15 @@ Python program that listens to a MQTT topic and publish a still image or an anim
 - Python 3 (allready installed on raspbian lite)
 - Pip 3 to install requirements
   - picamera
-  - tweepy
+  - Mastodon.py
   - systemd
   - paho-mqtt
-- A Tweeter account: dont use your personal account, create a new private account, ant then follow this new account from your personal account (activate notifications , every time the programs publish a tweet you'll get notified)
+- A Mastodon account: don't use your personal account
+  - Create a new account
+  - In the new account `https://mastodon.social/settings/profile` set "Require follow request" to true.
+  - In the new account `https://mastodon.social/settings/profile` set "Htis is a bot account" to true.
+  - In the new account `https://mastodon.social/settings/preferences/other` set the posting privacy to "Only Show to followers"
+  - Then follow this new account from your personal account.
 - A secure MQTT server on internet (dont use a public one). Some free options io.adafruit.com / cloudamqp.com
 
 ```bash
@@ -31,11 +36,9 @@ Create a `config.json` file with the following data
 
 ```json
 {
-  "tweepy": {
-    "consumer_key": "application's Details https://dev.twitter.com/apps (under 'OAuth settings')",
-    "consumer_secret": "application's Details https://dev.twitter.com/apps (under 'OAuth settings')",
-    "access_token": "application's Details https://dev.twitter.com/apps (under 'Your access token')",
-    "access_token_secret": "application's Details https://dev.twitter.com/apps (under 'Your access token')"
+  "mastodon": {
+    "access_token": "Application access token",
+    "api_base_url": "https://mastodon.social')"
   },
   "mqtt": {
     "server": "a.server.cloudamqp.com",

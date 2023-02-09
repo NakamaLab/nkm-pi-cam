@@ -7,7 +7,7 @@ from __future__ import absolute_import, print_function
 import picamera
 import datetime
 import shutil
-import tweepy
+from mastodon import Mastodon
 import logging
 from time import sleep
 import paho.mqtt.client as mqtt
@@ -38,30 +38,17 @@ logger.setLevel(logging.DEBUG)
 photo_path = '/home/pi/cam/data/latest.jpg'
 video_path = '/home/pi/cam/data/latest_video'
 
-# == OAuth Authentication ==
-#
-# This mode of authentication is the new preferred way
-# of authenticating with Twitter.
 
-# The consumer keys can be found on your application's Details
-# page located at https://dev.twitter.com/apps (under "OAuth settings")
-consumer_key = config['tweepy']['consumer_key']
-consumer_secret = config['tweepy']['consumer_secret']
+access_token = config['mastodon']['access_token']
+api_base_url = config['mastodon']['api_base_url']
 
-# The access tokens can be found on your applications's Details
-# page located at https://dev.twitter.com/apps (located
-# under "Your access token")
-access_token = config['tweepy']['access_token']
-access_token_secret = config['tweepy']['access_token_secret']
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
+api = Mastodon(access_token=access_token,api_base_url=api_base_url')
 
-api = tweepy.API(auth)
 
 # If the authentication was successful, you should
 # see the name of the account print out
-print(api.me().name)
+print(api.account_verify_credentials())
 
 
 # Captures an image and copies to latest.jpg. Needs to be passed a datetime
@@ -83,7 +70,7 @@ def capture_image(t):
     return
 
 
-def tweet_video(api):
+def toot_video(api):
     try:
         t = datetime.datetime.now()
         status = 'Video auto-tweet from Pi: ' + t.strftime('%Y/%m/%d %H:%M:%S')
@@ -102,13 +89,13 @@ def tweet_video(api):
         # genera el gif animado con ImageMagic
         system('convert -delay 150 -loop 0 ' +
                video_path + '*.jpg ' + video_path + '.gif')
-        api.update_with_media(video_path+'.gif', status=status)
+        api.media_post(media_file=video_path+'.gif',mime_type='image/gif',description=status)
         logger.info(status)
     except Exception as e:
         logger.fatal(e, exc_info=True)
 
 
-def tweet_image(api):
+def toot_image(api):
     try:
         t = datetime.datetime.now()
         capture_image(t)
@@ -116,7 +103,7 @@ def tweet_image(api):
         # If the application settings are set for "Read and Write" then
         # this line should tweet out the message to your account's
         # timeline. The "Read and Write" setting is on https://dev.twitter.com/apps
-        api.update_with_media(photo_path, status=status)
+        api.media_post(media_file=photo_path,mime_type='image/jpg',description=status)
         logger.info(status)
     except Exception as e:
         logger.fatal(e, exc_info=True)
@@ -138,9 +125,9 @@ def on_message(client, userdata, msg):
     global api
     payload = str(msg.payload)
     if 'video' in payload:
-        tweet_video(api)
+        toot_video(api)
     else:
-        tweet_image(api)
+        toot_image(api)
 
 
 if __name__ == '__main__':

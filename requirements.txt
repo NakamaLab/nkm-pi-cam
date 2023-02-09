@@ -1,4 +1,4 @@
 picamera
 systemd
-tweepy
+Mastodon.py
 paho-mqtt
