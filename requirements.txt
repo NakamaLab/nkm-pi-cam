@@ -1,4 +1,3 @@
 picamera
-systemd
 Mastodon.py
 paho-mqtt

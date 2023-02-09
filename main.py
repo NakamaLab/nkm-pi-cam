@@ -1,7 +1,5 @@
 #!/usr/bin/python
-
 # como correr como servicio https://www.raspberrypi.org/forums/viewtopic.php?t=197513
-# https: // medium.com/@matmoody/how-to-connect-the-twitter-streaming-api-and-slack-with-python-for-instant-notifications-bdd6c375e0a0
 
 from __future__ import absolute_import, print_function
 import picamera
@@ -43,7 +41,7 @@ access_token = config['mastodon']['access_token']
 api_base_url = config['mastodon']['api_base_url']
 
 
-api = Mastodon(access_token=access_token,api_base_url=api_base_url')
+api = Mastodon(access_token=access_token,api_base_url=api_base_url)
 
 
 # If the authentication was successful, you should
